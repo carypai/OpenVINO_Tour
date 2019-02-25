@@ -1,1 +1,1 @@
-First commit
+This repository is used to store the training tutorials
