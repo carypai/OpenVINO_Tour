@@ -9,9 +9,9 @@ models:
         device: CPU
         # topology IR (*.prototxt for caffe, *.xml for InferenceEngine, etc)
         # path to topology is prefixed with directory, specified in "-m/--models" option
-        caffe_model: mobilenet-ssd.prototxt
+        caffe_model: MobileNetSSD_deploy.prototxt
         # topology weights binary (*.caffemodel for caffe, *.bin for InferenceEngine)
-        caffe_weights: mobilenet-ssd.caffemodel
+        caffe_weights: MobileNetSSD_deploy.caffemodel
         # launcher returns raw result, so it should be converted
         # to an appropriate representation with adapter
         adapter: ssd
