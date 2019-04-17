@@ -15,7 +15,7 @@ models:
         # launcher returns raw result, so it should be converted
         # to an appropriate representation with adapter
         adapter: ssd
-        cpu_extensions: libcpu_extension_avx2.so
+        cpu_extensions: /opt/intel/openvino/inference_engine/lib/intel64/cpu_extension_avx2.so
         mo_params:
            input_shape: [1,3,300,300]
            output: detection_out
