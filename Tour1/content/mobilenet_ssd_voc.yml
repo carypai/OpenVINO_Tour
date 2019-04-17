@@ -1,0 +1,46 @@
+models:
+  - name: mobilenet_ssd
+
+    # list of launchers for your topology.
+    launchers:
+        # launcher framework (e.g. caffe, dlsdk)
+      - framework: dlsdk
+        # device for infer (e.g. for dlsdk cpu, gpu, hetero:cpu,gpu ...)
+        device: CPU
+        # topology IR (*.prototxt for caffe, *.xml for InferenceEngine, etc)
+        # path to topology is prefixed with directory, specified in "-m/--models" option
+        caffe_model: mobilenet-ssd.prototxt
+        # topology weights binary (*.caffemodel for caffe, *.bin for InferenceEngine)
+        caffe_weights: mobilenet-ssd.caffemodel
+        # launcher returns raw result, so it should be converted
+        # to an appropriate representation with adapter
+        adapter: ssd
+        cpu_extensions: libcpu_extension_avx2.so
+        mo_params:
+           input_shape: [1,3,300,300]
+           output: detection_out
+           input: data
+           mean_value: data[127.5,127.5,127.5]
+           scale_value: data[127.5]
+
+    datasets:
+      - name: voc07
+        data_source: VOC2007/JPEGImages
+        # parameters for annotation conversion to a common annotation representation format.
+        annotation_conversion:
+          converter: voc07
+          image_set_file: VOC2007/ImageSets/Main/mobilenet_ssd_test.txt
+          annotations_dir: VOC2007/Annotations
+          images_dir: VOC2007/JPEGImages
+
+        preprocessing:
+          - type: resize
+            size: 300
+
+        postprocessing:
+          - type: resize_prediction_boxes
+        metrics:
+          - type: map
+            integral: 11point
+            ignore_difficult: True
+            presenter: print_scalar
